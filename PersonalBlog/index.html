@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吴欣雨 | 软件工程个人博客</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        :root {
+            --primary-pink: #f0b7bc;
+            --secondary-pink: #e89a9f;
+            --text-pink: #d87b80;
+            --bg-light-blue: #f0f8ff;
+            --bg-white: #ffffff;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-pink: #e89a9f;
+            --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-light-blue);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 顶部欢迎区 */
+        .hero-section {
+            width: 100%;
+            height: 100vh;
+            background: url('https://picsum.photos/id/1082/1920/1080') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-text {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero-btn {
+            padding: 12px 32px;
+            background: var(--bg-white);
+            color: var(--text-pink);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(232, 154, 159, 0.3);
+        }
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(232, 154, 159, 0.4);
+        }
+        .retro-sidebar {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .retro-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .retro-text-box {
+            position: absolute;
+            top: 80px;
+            left: 120px;
+            background: #4158D0;
+            color: white;
+            padding: 15px 20px;
+            font-family: monospace;
+            font-size: 1.3rem;
+            line-height: 1.5;
+            border-radius: 4px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            width: 100%;
+            background: linear-gradient(to bottom, #87CEEB, transparent);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-pink);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        .nav-links a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-pink);
+            border-bottom: 2px solid var(--text-pink);
+            padding-bottom: 3px;
+        }
+
+        /* 模块容器 */
+        .page-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 5%;
+        }
+        .page-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-pink);
+            display: inline-block;
+        }
+
+        /* 关于我模块 */
+        .about-me {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+        }
+        .about-avatar {
+            width: 300px;
+            height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .about-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .about-text h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .about-tag {
+            color: var(--text-pink);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .about-text p {
+            color: var(--text-light);
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        /* 个人资料模块 */
+        .info-table {
+            width: 100%;
+            background: var(--bg-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }
+        .info-row {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            width: 150px;
+            padding: 15px 20px;
+            background: #fafafa;
+            font-weight: 600;
+            color: var(--text-pink);
+        }
+        .info-value {
+            flex: 1;
+            padding: 15px 20px;
+            color: #555;
+        }
+
+        /* 博客模块 */
+        .blog-list {
+            display: grid;
+            gap: 25px;
+        }
+        .blog-card {
+            background: var(--bg-white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        .blog-title {
+            font-size: 1.4rem;
+            color: var(--text-pink);
+            margin-bottom: 10px;
+        }
+        .blog-date {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 15px;
+        }
+        .blog-content {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+        .blog-opt {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+        }
+        .blog-opt button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .edit-btn {
+            background: #87CEEB;
+            color: #fff;
+        }
+        .del-btn {
+            background: #ee9a9f;
+            color: #fff;
+        }
+        .add-blog-btn {
+            margin-bottom: 20px;
+            padding: 10px 25px;
+            background: var(--text-pink);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* 兴趣爱好模块 - 分块布局 + 适配ROSÉ图片比例 */
+        .interests-wrap {
+            margin-bottom: 40px;
+        }
+        .interests-subtitle {
+            font-size: 1.4rem;
+            color: var(--text-pink);
+            margin: 25px 0 15px 0;
+            padding-left: 5px;
+            border-left: 3px solid var(--secondary-pink);
+        }
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .interest-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .interest-card:hover {
+            transform: translateY(-5px);
+        }
+        .interest-title {
+            padding: 15px;
+            font-weight: 600;
+            color: var(--text-pink);
+            background: #fff5f8;
+            flex-shrink: 0;
+        }
+        /* 适配ROSÉ 1080×2400图片比例 */
+        .interest-media {
+            width: 100%;
+            height: 0;
+            padding-bottom: 222.22%; /* 2400/1080 = 2.2222 */
+            position: relative;
+            background: #f0f0f0;
+        }
+        /* 原有兴趣模块图片比例 */
+        .interest-media.normal {
+            padding-bottom: 60%; /* 原比例 */
+        }
+        .interest-media img, .interest-media video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .interest-media .media-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: #666;
+            background: #f8f9fc;
+        }
+        .rosedesc {
+            padding: 15px;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        /* 交友留言模块 */
+        .friend-form {
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow-soft);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        .radio-group, .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .form-btn {
+            padding: 10px 25px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .form-btn:hover {
+            background: var(--secondary-pink);
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+        .footer-text {
+            margin-bottom: 10px;
+        }
+        .footer-btn {
+            padding: 8px 20px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* 弹窗通用样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: var(--bg-white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 90%;
+            max-width: 500px;
+        }
+        .modal-title {
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+        .modal-btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .modal-btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .modal-btn.confirm {
+            background: var(--primary-pink);
+            color: white;
+        }
+        .modal-btn.cancel {
+            background: #eee;
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 2rem;
+            }
+            .about-me {
+                flex-direction: column;
+                text-align: center;
+            }
+            .about-avatar {
+                width: 200px;
+                height: 200px;
+            }
+            .nav-links {
+                gap: 15px;
+            }
+            .retro-sidebar, .retro-text-box {
+                display: none;
+            }
+            .interests-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部欢迎区 -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="retro-sidebar">
+            <div class="retro-icon">💻</div>
+            <div class="retro-icon">📁</div>
+            <div class="retro-icon">🌐</div>
+            <div class="retro-icon">🦋</div>
+        </div>
+        <div class="retro-text-box">
+            WHO IS THIS BEAUTIFUL GIRL?<br>
+            I KNOW WHO IS SHE,<br>
+            AND I ALSO KNOW THIS IS ME!
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-text">Welcome to my channel!</h1>
+            <button class="hero-btn" id="enterBtn">→ 进入我的主页</button>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="nav-logo">
+            <span>❤️</span> 欣雨的博客
+        </div>
+        <div class="nav-links">
+            <a class="nav-item active" data-target="about">关于我</a>
+            <a class="nav-item" data-target="info">个人资料</a>
+            <a class="nav-item" data-target="blog">专业博客</a>
+            <a class="nav-item" data-target="interests">兴趣爱好</a>
+            <a class="nav-item" data-target="friends">交友留言</a>
+        </div>
+    </div>
+
+    <!-- 分页模块容器 -->
+    <div class="page-container">
+        <!-- 1. 关于我 -->
+        <div class="page-section active" id="about">
+            <h2 class="section-title">关于我</h2>
+            <div class="about-me">
+                <div class="about-avatar">
+                    <img src="wxy.png" alt="吴欣雨的照片">
+                </div>
+                <div class="about-text">
+                    <h2>吴欣雨</h2>
+                    <p class="about-tag">软件工程在读 | 热爱代码与生活</p>
+                    <p>Hello！我是吴欣雨，一名软件工程专业在校生。喜欢钻研编程技术，热爱前端页面设计、Java后端开发，享受敲代码、解bug带来的成就感。</p>
+                    <p>虽是理科码农，但也偏爱温柔治愈的审美，喜欢把代码写得整洁优雅，也喜欢打造属于自己的个人小博客。</p>
+                    <p>愿保持热爱，在软件工程的路上慢慢沉淀，不断学习，慢慢成长。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 个人资料 -->
+        <div class="page-section" id="info">
+            <h2 class="section-title">个人基础资料</h2>
+            <div class="info-table">
+                <div class="info-row">
+                    <div class="info-label">姓名</div>
+                    <div class="info-value">吴欣雨</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">专业</div>
+                    <div class="info-value">软件工程</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">生日</div>
+                    <div class="info-value">10月21日</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">擅长技能</div>
+                    <div class="info-value">前端网页开发、Java基础、网页布局、Bug调试、自学新技术</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">性格</div>
+                    <div class="info-value">温柔开朗、踏实认真、喜欢沉淀学习、乐于分享专业知识</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 专业博客 -->
+        <div class="page-section" id="blog">
+            <h2 class="section-title">专业学习博客</h2>
+            <button class="add-blog-btn" id="openBlogForm">➕ 新增专业博客</button>
+            <div class="blog-list" id="blogList"></div>
+        </div>
+
+        <!-- 4. 兴趣爱好 - 分块展示（我的爱好 + ROSÉ） -->
+        <div class="page-section" id="interests">
+            <h2 class="section-title">我的兴趣爱好</h2>
+            
+            <!-- 第一块：我的日常爱好 -->
+            <div class="interests-wrap">
+                <h3 class="interests-subtitle">我的日常</h3>
+                <div class="interests-grid">
+                    <div class="interest-card">
+                        <div class="interest-title">编程项目</div>
+                        <div class="interest-media normal">
+                            <img src="https://picsum.photos/id/0/400/200" alt="coding">
+                        </div>
+                    </div>
+                    <div class="interest-card">
+                        <div class="interest-title">听歌放松</div>
+                        <div class="interest-media normal">
+                            <div class="media-content">
+                                <p>🎵 正在播放...</p>
+                                <p style="font-size: 0.9rem;">安静听歌，治愈学习日常</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二块：喜欢的明星 ROSÉ -->
+            <div class="interests-wrap">
+                <h3 class="interests-subtitle">喜欢的明星 · ROSÉ 朴彩英</h3>
+                <div class="interests-grid">
+                    <div class="interest-card">
+                        <div class="interest-title">ROSÉ 朴彩英</div>
+                        <div class="interest-media">
+                            <img src="1.png" alt="ROSÉ">
+                        </div>
+                        <div class="rosedesc">BLACKPINK成员，澳洲野玫瑰，拥有独特天籁嗓音</div>
+                    </div>
+                    <div class="interest-card">
+                        <div class="interest-title">成就与荣誉</div>
+                        <div class="interest-media">
+                            <img src="2.png" alt="ROSÉ">
+                        </div>
+                        <div class="rosedesc">solo曲《On The Ground》全球爆火<br>吉尼斯世界纪录保持者<br>首位登上科切拉主舞台的韩国女歌手</div>
+                    </div>
+                    <div class="interest-card">
+                        <div class="interest-title">爱好特长</div>
+                        <div class="interest-media">
+                            <img src="3.png" alt="ROSÉ">
+                        </div>
+                        <div class="rosedesc">擅长吉他弹唱、创作、服装设计<br>喜欢小动物、旅行、摄影、料理</div>
+                    </div>
+                    <div class="interest-card">
+                        <div class="interest-title">我的偶像</div>
+                        <div class="interest-media">
+                            <img src="4.png" alt="ROSÉ">
+                        </div>
+                        <div class="rosedesc">温柔又努力，舞台魅力四射<br>是我学习与生活的榜样</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 交友留言 -->
+        <div class="page-section" id="friends">
+            <h2 class="section-title">交友留言</h2>
+            <div class="friend-form">
+                <div class="form-group">
+                    <label for="name">你的昵称</label>
+                    <input type="text" id="name" class="form-input" placeholder="请输入你的昵称">
+                </div>
+                <div class="form-group">
+                    <label>性别</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="sex" checked> 女生</label>
+                        <label><input type="radio" name="sex"> 男生</label>
+                        <label><input type="radio" name="sex"> 其他</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>兴趣标签</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox"> 逛吃</label>
+                        <label><input type="checkbox"> 购物</label>
+                        <label><input type="checkbox"> 运动</label>
+                        <label><input type="checkbox"> 追星</label>
+                        <label><input type="checkbox"> 游戏</label>
+                        <label><input type="checkbox"> 敲代码</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="relationship">交友类型</label>
+                    <select id="relationship" class="form-input">
+                        <option>陌生人</option>
+                        <option>普通网友</option>
+                        <option>专业学习搭子</option>
+                        <option>聊得来的朋友</option>
+                        <option>一辈子的好朋友</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言想说的话</label>
+                    <textarea id="message" class="form-textarea" placeholder="请说点什么吧"></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button class="form-btn">成为闺蜜</button>
+                    <button class="form-btn">成为学习搭子</button>
+                    <button class="form-btn">日常交友</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增/编辑博客弹窗 -->
+    <div class="modal-overlay" id="blogModal">
+        <div class="modal-box">
+            <h3 class="modal-title">编辑博客</h3>
+            <div class="form-group">
+                <label>博客标题</label>
+                <input type="text" class="form-input" id="blogTitle" placeholder="请输入博客标题">
+            </div>
+            <div class="form-group">
+                <label>博客内容</label>
+                <textarea class="form-textarea" id="blogContent" placeholder="请输入博客正文内容"></textarea>
+            </div>
+            <input type="hidden" id="editId">
+            <div class="modal-btn-group">
+                <button class="modal-btn cancel" id="closeBlogModal">取消</button>
+                <button class="modal-btn confirm" id="saveBlog">保存博客</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除确认弹窗 -->
+    <div class="modal-overlay" id="delModal">
+        <div class="modal-box">
+            <h3 class="modal-title">删除确认</h3>
+            <p style="color: var(--text-light); margin-bottom: 15px;">确定要删除这篇博客吗？删除后无法恢复哦~</p>
+            <input type="hidden" id="delBlogId">
+            <div class="modal-btn-group">
+                <button class="modal-btn cancel" id="closeDelModal">取消</button>
+                <button class="modal-btn confirm" id="confirmDel">确定删除</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p class="footer-text">以代码为友，以热爱为伴</p>
+        <p>© 2025 吴欣雨 | 软件工程个人博客</p>
+        <p style="margin-top: 10px;">生日：10月21日 | 保持热爱，持续前行</p>
+        <button class="footer-btn" id="toTopBtn">回到顶部</button>
+    </footer>
+
+    <script>
+        // 博客初始数据
+        const defaultBlogs = [
+            {id:1, title:"学习前端的入门心得与总结", date:"2025-12-28", content:"作为软件工程专业学生，前端是我入门编程的第一站。从HTML搭建基础结构，到CSS美化页面布局，再到简单JavaScript实现交互，一步步感受到网页制作的乐趣。入门最重要的就是多敲代码、多复刻页面，不用追求一开始就做复杂项目，把标签、选择器、布局原理学扎实，慢慢就能做出属于自己的个人网站。"},
+            {id:2, title:"软件工程专业Java学习感悟", date:"2025-12-25", content:"Java是软件工程的核心语言，面向对象思想、类与对象、继承多态、集合框架都是重点难点。刚开始学习容易觉得抽象，后来慢慢理解封装、继承、多态的设计思想后，写代码变得更有条理。我的学习方法是：多看基础语法、多写小案例、整理笔记复盘。"},
+            {id:3, title:"软件工程专业大学生如何高效学习", date:"2025-12-20", content:"软件工程不仅是学敲代码，还要掌握计算机基础、网络、操作系统、数据库等多门课程。大学期间最忌讳拖延，建议提前规划学习路线：先掌握一门编程语言，再学网页开发、数据库使用，最后尝试做小型实战项目。坚持写学习博客、整理知识点笔记，既能巩固自己的学习。"}
+        ];
+
+        // 本地存储操作
+        function getBlogs(){
+            let data = localStorage.getItem("blogs");
+            return data ? JSON.parse(data) : defaultBlogs;
+        }
+        function saveBlogs(list){
+            localStorage.setItem("blogs", JSON.stringify(list));
+        }
+
+        // 渲染博客列表
+        function renderBlog(){
+            let list = getBlogs();
+            let html = "";
+            list.forEach(item=>{
+                html += `
+                <div class="blog-card">
+                    <h3 class="blog-title">${item.title}</h3>
+                    <div class="blog-date">发布时间：${item.date}</div>
+                    <div class="blog-content">${item.content}</div>
+                    <div class="blog-opt">
+                        <button class="edit-btn" onclick="openEditModal(${item.id})">修改</button>
+                        <button class="del-btn" onclick="openDelModal(${item.id})">删除</button>
+                    </div>
+                </div>
+                `;
+            });
+            document.getElementById("blogList").innerHTML = html;
+        }
+
+        // 新增/编辑博客弹窗逻辑
+        const blogModal = document.getElementById("blogModal");
+        const delModal = document.getElementById("delModal");
+
+        // 打开新增博客弹窗
+        document.getElementById("openBlogForm").onclick = function(){
+            document.getElementById("blogTitle").value = "";
+            document.getElementById("blogContent").value = "";
+            document.getElementById("editId").value = "";
+            blogModal.classList.add("active");
+        };
+
+        // 打开编辑博客弹窗
+        window.openEditModal = function(id){
+            let list = getBlogs();
+            let item = list.find(x=>x.id == id);
+            if(!item) return;
+            document.getElementById("blogTitle").value = item.title;
+            document.getElementById("blogContent").value = item.content;
+            document.getElementById("editId").value = id;
+            blogModal.classList.add("active");
+        };
+
+        // 关闭博客弹窗
+        document.getElementById("closeBlogModal").onclick = function(){
+            blogModal.classList.remove("active");
+        };
+
+        // 保存博客
+        document.getElementById("saveBlog").onclick = function(){
+            let title = document.getElementById("blogTitle").value.trim();
+            let content = document.getElementById("blogContent").value.trim();
+            let editId = document.getElementById("editId").value;
+            if(!title || !content){
+                alert("标题和内容不能为空！");
+                return;
+            }
+            let list = getBlogs();
+            if(editId){
+                let idx = list.findIndex(x=>x.id == editId);
+                if(idx !== -1){
+                    list[idx].title = title;
+                    list[idx].content = content;
+                }
+            }else{
+                let newId = list.length ? Math.max(...list.map(x=>x.id)) + 1 : 1;
+                let now = new Date();
+                let dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+                list.push({id:newId, title, date:dateStr, content});
+            }
+            saveBlogs(list);
+            renderBlog();
+            blogModal.classList.remove("active");
+        };
+
+        // 删除确认弹窗逻辑
+        window.openDelModal = function(id){
+            document.getElementById("delBlogId").value = id;
+            delModal.classList.add("active");
+        };
+        document.getElementById("closeDelModal").onclick = function(){
+            delModal.classList.remove("active");
+        };
+        document.getElementById("confirmDel").onclick = function(){
+            let id = document.getElementById("delBlogId").value;
+            let list = getBlogs().filter(x=>x.id != id);
+            saveBlogs(list);
+            renderBlog();
+            delModal.classList.remove("active");
+        };
+
+        // 点击遮罩层关闭弹窗
+        blogModal.addEventListener('click', function(e){
+            if(e.target === blogModal) blogModal.classList.remove("active");
+        });
+        delModal.addEventListener('click', function(e){
+            if(e.target === delModal) delModal.classList.remove("active");
+        });
+
+        // 分页切换核心逻辑
+        const navItems = document.querySelectorAll('.nav-item');
+        const pageSections = document.querySelectorAll('.page-section');
+
+        function switchPage(targetId) {
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if(item.dataset.target === targetId) {
+                    item.classList.add('active');
+                }
+            });
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+                if(section.id === targetId) {
+                    section.classList.add('active');
+                }
+            });
+        }
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                switchPage(targetId);
+            });
+        });
+
+        // 进入主页按钮
+        document.getElementById("enterBtn").addEventListener('click', function() {
+            document.querySelector('.navbar').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 回到顶部
+        document.getElementById("toTopBtn").addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 页面初始化
+        renderBlog();
+    </script>
+</body>
+</html>
